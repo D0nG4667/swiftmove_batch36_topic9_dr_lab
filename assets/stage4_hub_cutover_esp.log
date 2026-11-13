@@ -1,0 +1,19 @@
+hp@DonGabbys-EliteBook MINGW64 ~/Desktop/gab/MIVA/MIT8105/swiftmove_batch36_topic9_dr_lab
+$ ./scripts/enable_ipsec.sh
+[*] Provisioning AES-256-GCM IPsec ESP tunnels to HQ (hq-fw-01) and DR Hub (dr-fw-01)...
+[+] AES-256-GCM IPsec ESP active across 5G FWA (SPI 0x3611) & LEO VSAT (SPI 0x3621) with HQ/DR Hub parity.
+
+hp@DonGabbys-EliteBook MINGW64 ~/Desktop/gab/MIVA/MIT8105/swiftmove_batch36_topic9_dr_lab
+$ ./scripts/run_drill.sh hub-cutover && docker exec swiftmove-dr-hub tcpdump -ni any esp -c 5
+[Stage 4] Isolating Lagos HQ Loopback 10.20.10.1/32 -> Re-homing Broker 10.20.4.10 to Warm DR Hub 10.20.10.2/32
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+22:41:28.995500 eth0  In  IP 172.20.3.2 > 10.20.4.10: ESP(spi=0x00003621,seq=0x15b), length 208
+22:41:31.199879 eth0  In  IP 172.20.3.2 > 10.20.4.10: ESP(spi=0x00003621,seq=0x15c), length 208
+22:41:33.402028 eth0  In  IP 172.20.3.2 > 10.20.4.10: ESP(spi=0x00003621,seq=0x15d), length 208
+22:41:35.605048 eth0  In  IP 172.20.3.2 > 10.20.4.10: ESP(spi=0x00003621,seq=0x15e), length 208
+22:41:37.808471 eth0  In  IP 172.20.3.2 > 10.20.4.10: ESP(spi=0x00003621,seq=0x15f), length 208
+5 packets captured
+5 packets received by filter
+0 packets dropped by kernel

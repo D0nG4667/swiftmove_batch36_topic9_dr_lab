@@ -1,0 +1,18 @@
+hp@DonGabbys-EliteBook MINGW64 ~/Desktop/gab/MIVA/MIT8105/swiftmove_batch36_topic9_dr_lab
+$ ./scripts/run_drill.sh brownout && sleep 8 && ./scripts/run_drill.sh status
+[Stage 2] Injecting 185 ms Metro Fibre Brownout (>= 150 ms NQA SLA) -> VRRP priority drops 120 to 70
+=== DEPOT-LOS1-GW1 (10.20.9.2/28 | Primary Fibre LP 200) ===
+    inet 10.20.9.2/28 brd 10.20.9.15 scope global eth0
+Nov 12 22:11:45 6010575e0fd0 daemon.info Keepalived_vrrp[34]: (SWIFTMOVE_LOS1) Entering BACKUP STATE
+Nov 12 22:11:45 6010575e0fd0 daemon.info Keepalived_vrrp[34]: (SWIFTMOVE_LOS1) removing VIPs.
+Nov 12 22:11:46 6010575e0fd0 user.notice NQA-SLA: SLA BREACH on Metro Fibre (10.20.11.2): RTT=183ms >= 150ms ceiling
+Nov 12 22:11:48 6010575e0fd0 user.notice NQA-SLA: SLA BREACH on Metro Fibre (10.20.11.2): RTT=187ms >= 150ms ceiling
+Nov 12 22:11:50 6010575e0fd0 user.notice NQA-SLA: SLA BREACH on Metro Fibre (10.20.11.2): RTT=190ms >= 150ms ceiling
+Nov 12 22:11:52 6010575e0fd0 user.notice NQA-SLA: SLA BREACH on Metro Fibre (10.20.11.2): RTT=190ms >= 150ms ceiling
+
+=== DEPOT-LOS1-GW2 (10.20.9.3/28 | 5G LP 150 & LEO VSAT LP 100) ===
+    inet 10.20.9.3/28 brd 10.20.9.15 scope global eth0
+    inet 10.20.9.1/28 scope global secondary eth0
+Nov 12 22:11:50 622dc195a01e daemon.info Keepalived_vrrp[55]: (SWIFTMOVE_LOS1) Sending/queueing gratuitous ARPs on eth0 for 10.20.9.1
+Nov 12 22:11:50 622dc195a01e daemon.info Keepalived_vrrp[55]: Sending gratuitous ARP on eth0 for 10.20.9.1
+Nov 12 22:11:50 622dc195a01e daemon.info Keepalived_vrrp[55]: Sending gratuitous ARP on eth0 for 10.20.9.1

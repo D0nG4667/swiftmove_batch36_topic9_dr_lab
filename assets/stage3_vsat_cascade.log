@@ -1,0 +1,21 @@
+hp@DonGabbys-EliteBook MINGW64 ~/Desktop/gab/MIVA/MIT8105/swiftmove_batch36_topic9_dr_lab
+$ ./scripts/run_drill.sh vsat-cascade
+[Stage 3] Disabling Metro Fibre & 5G FWA -> Cascades to LEO VSAT (LP 100) & revokes UDP 9000 video
+[*] Waiting 7s for 3 failed NQA probes on 5G FWA...
+Nov 12 22:30:14 622dc195a01e user.notice SDN-DR-CASCADE: 3 NQA probes failed on 5G FWA; shifted to LEO VSAT (LP 100) and revoked UDP 9000 AF41 video tag
+[*] Testing unauthorised RTSP (554) and revoked SRT (9000) video drops from Drone 10.20.5.10:
+[VIDEO-TEST #1] Sent RTSP (UDP 554) & SRT HD Video (UDP 9000 / AF41)
+[VIDEO-TEST #2] Sent RTSP (UDP 554) & SRT HD Video (UDP 9000 / AF41)
+[VIDEO-TEST #3] Sent RTSP (UDP 554) & SRT HD Video (UDP 9000 / AF41)
+Chain FORWARD (policy ACCEPT 3 packets, 147 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    3   147 DROP       17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:9000
+ 1485  286K ACCEPT     17   --  *      *       0.0.0.0/0            10.20.4.10           udp dpt:8883
+    0     0 ACCEPT     6    --  *      *       0.0.0.0/0            10.20.4.10           tcp dpt:8883
+    0     0 ACCEPT     17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:14550
+    0     0 ACCEPT     1    --  *      *       0.0.0.0/0            0.0.0.0/0
+    6   306 DROP       17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:554
+    0     0 DROP       6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:554
+    0     0 DROP       17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:8554
+    0     0 DROP       17   --  *      *       0.0.0.0/0            0.0.0.0/0            udp dpt:5004
+    0     0 DROP       6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:1935

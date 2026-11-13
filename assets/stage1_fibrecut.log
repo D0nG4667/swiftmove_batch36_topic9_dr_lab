@@ -1,0 +1,18 @@
+hp@DonGabbys-EliteBook MINGW64 ~/Desktop/gab/MIVA/MIT8105/swiftmove_batch36_topic9_dr_lab
+$ ./scripts/run_drill.sh fibrecut && sleep 16 && ./scripts/run_drill.sh status
+[Stage 1] Simulating Metro Fibre Cut: 100% loss on 10.20.11.0/28 -> VRRP shifts 10.20.9.1 to 5G FWA
+=== DEPOT-LOS1-GW1 (10.20.9.2/28 | Primary Fibre LP 200) ===
+    inet 10.20.9.2/28 brd 10.20.9.15 scope global eth0
+Nov 12 22:51:53 6010575e0fd0 daemon.info Keepalived_vrrp[10098]: Script `chk_fibre_sla` now returning 1
+Nov 12 22:52:01 6010575e0fd0 daemon.info Keepalived_vrrp[10098]: VRRP_Script(chk_fibre_sla) failed (exited with status 1)
+Nov 12 22:52:01 6010575e0fd0 daemon.info Keepalived_vrrp[10098]: (SWIFTMOVE_LOS1) Changing effective priority from 120 to 70
+Nov 12 22:52:04 6010575e0fd0 daemon.info Keepalived_vrrp[10098]: (SWIFTMOVE_LOS1) Master received advert from 10.20.9.3 with higher priority 100, ours 70
+Nov 12 22:52:04 6010575e0fd0 daemon.info Keepalived_vrrp[10098]: (SWIFTMOVE_LOS1) Entering BACKUP STATE
+Nov 12 22:52:04 6010575e0fd0 daemon.info Keepalived_vrrp[10098]: (SWIFTMOVE_LOS1) removing VIPs.
+
+=== DEPOT-LOS1-GW2 (10.20.9.3/28 | 5G LP 150 & LEO VSAT LP 100) ===
+    inet 10.20.9.3/28 brd 10.20.9.15 scope global eth0
+    inet 10.20.9.1/28 scope global secondary eth0
+Nov 12 22:52:09 622dc195a01e daemon.info Keepalived_vrrp[55]: (SWIFTMOVE_LOS1) Sending/queueing gratuitous ARPs on eth0 for 10.20.9.1
+Nov 12 22:52:09 622dc195a01e daemon.info Keepalived_vrrp[55]: Sending gratuitous ARP on eth0 for 10.20.9.1
+Nov 12 22:52:09 622dc195a01e daemon.info Keepalived_vrrp[55]: Sending gratuitous ARP on eth0 for 10.20.9.1

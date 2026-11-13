@@ -5,3 +5,4 @@
 *.cfg text eol=lf
 *.md text eol=lf
 *.txt text eol=lf
+*.log text eol=lf

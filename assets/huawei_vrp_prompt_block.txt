@@ -1,0 +1,27 @@
+[Depot-Lagos1-GW1] bfd fibre-hq bind peer-ip 10.20.11.1 interface GigabitEthernet0/0/1
+[Depot-Lagos1-GW1-bfd-session-fibre-hq] discriminator local 101
+[Depot-Lagos1-GW1-bfd-session-fibre-hq] discriminator remote 201
+[Depot-Lagos1-GW1-bfd-session-fibre-hq] min-tx-interval 100 min-rx-interval 100 detect-multiplier 3
+[Depot-Lagos1-GW1-bfd-session-fibre-hq] commit
+[Depot-Lagos1-GW1] nqa test-instance admin hq-fibre-sla
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] test-type icmp
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] destination-address ipv4 10.20.10.1
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] source-address ipv4 10.20.11.2
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] interval seconds 2
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] timeout 1
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] probe-count 3
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] frequency 6
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] reaction 1 checked-element rtt-average threshold-value 150 100 action-type trigger-only
+[Depot-Lagos1-GW1-nqa-admin-hq-fibre-sla] start now
+[Depot-Lagos1-GW1] track 1 nqa entry admin hq-fibre-sla reaction 1
+[Depot-Lagos1-GW1] bgp 65101
+[Depot-Lagos1-GW1-bgp] peer 10.20.10.1 as-number 65001
+[Depot-Lagos1-GW1-bgp] peer 10.20.10.2 as-number 65002
+[Depot-Lagos1-GW1-bgp] timer keepalive 10 hold 30
+[Depot-Lagos1-GW1] interface Vlanif90
+[Depot-Lagos1-GW1-Vlanif90] ip address 10.20.9.2 255.255.255.240
+[Depot-Lagos1-GW1-Vlanif90] vrrp vrid 10 virtual-ip 10.20.9.1
+[Depot-Lagos1-GW1-Vlanif90] vrrp vrid 10 priority 120
+[Depot-Lagos1-GW1-Vlanif90] vrrp vrid 10 preempt-mode timer delay 180
+[Depot-Lagos1-GW1-Vlanif90] vrrp vrid 10 track bfd-session 101 reduced 50
+[Depot-Lagos1-GW1-Vlanif90] vrrp vrid 10 track 1 reduced 50
