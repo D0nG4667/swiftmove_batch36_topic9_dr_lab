@@ -1,0 +1,155 @@
+services:
+  wan-core:
+    image: alpine:3.20
+    container_name: swiftmove-wan-core
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.rp_filter=0
+    volumes:
+      - ./scripts:/opt/scripts
+    command: sh -c "sh /opt/scripts/init_wan.sh compose && sleep infinity"
+    networks:
+      wan_fibre:
+        ipv4_address: 10.20.11.1
+      wan_5g:
+        ipv4_address: 10.20.11.9
+      wan_vsat:
+        ipv4_address: 172.20.3.1
+      hq_link:
+        ipv4_address: 172.20.1.1
+      dr_link:
+        ipv4_address: 172.20.2.1
+
+  hq-hub:
+    image: alpine:3.20
+    container_name: swiftmove-hq-hub
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.rp_filter=0
+    depends_on:
+      - wan-core
+    volumes:
+      - ./scripts:/opt/scripts
+      - ./logs:/opt/logs
+    command: sh -c "sh /opt/scripts/init_hub.sh compose hq && sleep infinity"
+    networks:
+      hq_link:
+        ipv4_address: 172.20.1.2
+
+  dr-hub:
+    image: alpine:3.20
+    container_name: swiftmove-dr-hub
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.rp_filter=0
+    depends_on:
+      - wan-core
+    volumes:
+      - ./scripts:/opt/scripts
+      - ./logs:/opt/logs
+    command: sh -c "sh /opt/scripts/init_hub.sh compose dr && sleep infinity"
+    networks:
+      dr_link:
+        ipv4_address: 172.20.2.2
+
+  gw1-los1-pri:
+    image: alpine:3.20
+    container_name: swiftmove-gw1-los1-pri
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.rp_filter=0
+    depends_on:
+      - wan-core
+      - hq-hub
+      - dr-hub
+    volumes:
+      - ./scripts:/opt/scripts
+    command: sh -c "sh /opt/scripts/init_gw1.sh compose && sleep infinity"
+    networks:
+      depot_los1:
+        ipv4_address: 10.20.9.2
+      wan_fibre:
+        ipv4_address: 10.20.11.2
+
+  gw2-los1-dr:
+    image: alpine:3.20
+    container_name: swiftmove-gw2-los1-dr
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.rp_filter=0
+    depends_on:
+      - wan-core
+      - hq-hub
+      - dr-hub
+    volumes:
+      - ./scripts:/opt/scripts
+    command: sh -c "sh /opt/scripts/init_gw2.sh compose && sleep infinity"
+    networks:
+      depot_los1:
+        ipv4_address: 10.20.9.3
+      wan_5g:
+        ipv4_address: 10.20.11.10
+      wan_vsat:
+        ipv4_address: 172.20.3.2
+
+  edge-los1:
+    image: alpine:3.20
+    container_name: swiftmove-edge-los1
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - gw1-los1-pri
+      - gw2-los1-dr
+    volumes:
+      - ./scripts:/opt/scripts
+      - ./logs:/opt/logs
+    command: sh -c "sh /opt/scripts/init_edge.sh compose && sleep infinity"
+    networks:
+      depot_los1:
+        ipv4_address: 10.20.9.10
+
+networks:
+  depot_los1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.9.0/28
+          gateway: 10.20.9.14
+  wan_fibre:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.11.0/29
+          gateway: 10.20.11.6
+  wan_5g:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.11.8/29
+          gateway: 10.20.11.14
+  wan_vsat:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.3.0/29
+          gateway: 172.20.3.6
+  hq_link:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.1.0/29
+          gateway: 172.20.1.6
+  dr_link:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.2.0/29
+          gateway: 172.20.2.6

@@ -1,0 +1,70 @@
+name: swiftmove-b36-dr
+
+topology:
+  nodes:
+    sw-los1:
+      kind: linux
+      image: alpine:3.20
+      exec:
+        - sh -c "ip link add br0 type bridge && ip link set eth1 master br0 && ip link set eth2 master br0 && ip link set eth3 master br0 && ip link set eth1 up && ip link set eth2 up && ip link set eth3 up && ip link set br0 up"
+
+    edge-los1:
+      kind: linux
+      image: alpine:3.20
+      binds:
+        - ./scripts:/opt/scripts
+        - ./logs:/opt/logs
+      exec:
+        - sh /opt/scripts/init_edge.sh clab
+
+    gw1-los1-pri:
+      kind: linux
+      image: alpine:3.20
+      binds:
+        - ./scripts:/opt/scripts
+      exec:
+        - sh /opt/scripts/init_gw1.sh clab
+
+    gw2-los1-dr:
+      kind: linux
+      image: alpine:3.20
+      binds:
+        - ./scripts:/opt/scripts
+      exec:
+        - sh /opt/scripts/init_gw2.sh clab
+
+    wan-core:
+      kind: linux
+      image: alpine:3.20
+      binds:
+        - ./scripts:/opt/scripts
+      exec:
+        - sh /opt/scripts/init_wan.sh clab
+
+    hq-hub:
+      kind: linux
+      image: alpine:3.20
+      binds:
+        - ./scripts:/opt/scripts
+        - ./logs:/opt/logs
+      exec:
+        - sh /opt/scripts/init_hub.sh clab hq
+
+    dr-hub:
+      kind: linux
+      image: alpine:3.20
+      binds:
+        - ./scripts:/opt/scripts
+        - ./logs:/opt/logs
+      exec:
+        - sh /opt/scripts/init_hub.sh clab dr
+
+  links:
+    - endpoints: ["edge-los1:eth1", "sw-los1:eth1"]
+    - endpoints: ["gw1-los1-pri:eth1", "sw-los1:eth2"]
+    - endpoints: ["gw2-los1-dr:eth1", "sw-los1:eth3"]
+    - endpoints: ["gw1-los1-pri:eth2", "wan-core:eth1"]
+    - endpoints: ["gw2-los1-dr:eth2", "wan-core:eth2"]
+    - endpoints: ["gw2-los1-dr:eth3", "wan-core:eth3"]
+    - endpoints: ["hq-hub:eth1", "wan-core:eth4"]
+    - endpoints: ["dr-hub:eth1", "wan-core:eth5"]
