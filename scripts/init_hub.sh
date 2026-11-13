@@ -26,7 +26,7 @@ fi
 
 # Transactional SDN Firewall Parity across hq-fw-01 and dr-fw-01 (Batch 36 Topic 4 & Topic 9)
 iptables -F INPUT
-# Rule 1: Permit MQTT/TLS Telemetry (TCP/UDP 8883) to Broker 10.20.4.10
+# Rule 1: Permit telemetry probe traffic (TCP/UDP 8883) to Broker 10.20.4.10
 iptables -A INPUT -p tcp --dport 8883 -d 10.20.4.10 -j ACCEPT
 iptables -A INPUT -p udp --dport 8883 -d 10.20.4.10 -j ACCEPT
 # Rule 2: Permit MAVLink Command/Telemetry (UDP 14550)
